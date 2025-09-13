@@ -79,6 +79,7 @@ class Curso:
         self.nombre = nombre
         self.instructor = instructor
         self.estudiantes = []
+        self.evaluaciones = []
 
     def inscribir_estudiante(self, estudiante):
         if not isinstance(estudiante, Estudiante):
@@ -136,7 +137,6 @@ def crear_evaluacion(tipo, nombre, curso, puntaje_maximo):
     else:
         raise ValueError(f"Tipo de evaluación invalida")
 
-
 def reporte_promedios(curso):
     print(f"Reporte de promedios del curso: {curso.nombre}")
     for estudiante in curso.estudiantes:
@@ -168,6 +168,10 @@ if __name__ == "__main__":
     # Crear evaluaciones
     ex1 = crear_evaluacion("Examen", "Parcial1", curso_python, 100)
     tarea1 = crear_evaluacion("Tarea", "Tarea1", curso_python, 20)
+
+    # Guardar evaluaciones en el curso
+    curso_python.evaluaciones.append(ex1)
+    curso_python.evaluaciones.append(tarea1)
 
     print("\nEvaluaciones creadas:")
     print(f"- {ex1.tipo()}: {ex1.nombre} (Máx: {ex1.puntaje_maximo})")

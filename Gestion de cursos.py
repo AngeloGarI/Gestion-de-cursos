@@ -157,9 +157,12 @@ if __name__ == "__main__":
 
     est1 = Estudiante(101, "Ana", "ana@mail.com", "A123")
     est2 = Estudiante(102, "Juan", "juan@mail.com", "J456")
-
-    curso_python.inscribir_estudiante(est1)
-    curso_python.inscribir_estudiante(est2)
+    try:
+        curso_python.inscribir_estudiante(est1)
+        curso_python.inscribir_estudiante(est2)
+        curso_python.inscribir_estudiante(est1)
+    except ValueError as e:
+        print(e)
 
     print(curso_python)
     for est in curso_python.estudiantes:

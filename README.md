@@ -1,118 +1,80 @@
-📚 Sistema de Gestión de cursos
+````markdown
+# 📚 Sistema de Gestión de Cursos
 
-Este proyecto implementa un sistema académico en Python, dividido por módulos según cada integrante del equipo:
+Este proyecto es una aplicación en **Python** para gestionar cursos, estudiantes e instructores.  
+Se implementan principios de **Programación Orientada a Objetos (POO)** con herencia, abstracción y polimorfismo.  
 
-Integrante 1 – Módulo de Usuarios y Cursos
+---
 
-Integrante 2 – Módulo de Evaluaciones y Reportes
+## 🚀 Características
 
-🧑‍💻 Integrante 1 – Módulo de Usuarios y Cursos
-✔️ Análisis y diseño
+- **Crear y administrar cursos** (nombre, código, instructor).  
+- **Registrar usuarios**: estudiantes e instructores.  
+- **Inscribir estudiantes en cursos**.  
+- **Crear evaluaciones** (exámenes, tareas) para cada curso.  
+- **Registrar calificaciones** por estudiante y evaluación.  
+- **Consultar cursos, estudiantes inscritos, evaluaciones y calificaciones**.  
+- **Generar reportes simples**:
+  - Promedios por estudiante en cada curso.  
+  - Alerta de estudiantes con promedio bajo.  
 
-Clases base: Usuario, Estudiante, Instructor.
+---
 
-Herencia entre usuarios.
+## 🛠️ Requisitos
 
-Clase Curso con atributos: nombre, código, instructor.
+- Python 3.8 o superior.  
+- No requiere librerías externas (usa solo la librería estándar de Python).  
 
-Funciones para inscripción de estudiantes a cursos.
+---
 
-Manejo de errores:
+## ▶️ Ejecución
 
-Inscripción repetida.
+1. Clona este repositorio o descarga los archivos.  
+2. Abre una terminal en la carpeta del proyecto.  
+3. Ejecuta:
 
-Instructor inexistente.
+```
+python Gestion de cursos.py
+````
 
-Uso de *args y **kwargs en constructores.
+4. Usa el menú interactivo:
 
-📌 Desarrollo
+```
+=== Menú Principal ===
+1. Crear curso
+2. Inscribir estudiante en curso
+3. Crear evaluación en curso
+4. Registrar calificación
+5. Consultar cursos y detalles
+6. Generar reportes
+7. Salir
+```
 
-Encapsulamiento y validaciones en los atributos.
+---
 
-Inscripción de estudiantes a cursos.
+## 📊 Reportes disponibles
 
-Ejemplo de uso incluido.
+* **Promedios del curso**: muestra el promedio de cada estudiante en un curso.
+* **Alerta de bajo rendimiento**: muestra los estudiantes con promedio menor a 60 (configurable).
 
-📝 Integrante 2 – Módulo de Evaluaciones y Reportes
-✔️ Análisis y diseño
+---
 
-Clase abstracta Evaluacion.
+## 📂 Estructura del proyecto
 
-Clases hijas: Examen, Tarea (polimorfismo).
+```
+.
+├── gestion_cursos.py   # Código principal del sistema
+├── README.md           # Documentación
+└── uml_diagrama.puml   # Diagrama UML de clases (PlantUML)
+```
 
-Métodos principales:
+---
 
-Registrar calificaciones.
+## 👨‍💻 Autores
 
-Calcular promedios.
+Proyecto desarrollado como práctica de **POO en Python**.
+Incluye herencia, abstracción, polimorfismo y encapsulación.
 
-Alertar estudiantes con bajo rendimiento.
-
-📌 Desarrollo
-
-Registro de calificaciones con validaciones (curso válido, nota en rango).
-
-Reportes generados desde los datos del curso.
-
-Uso de diccionarios para almacenar evaluaciones y notas.
-
-🚀 Ejemplo de uso
-inst = Instructor(1, "María", "maria@mail.com", "Ingeniera en Sistemas")
-curso_python = inst.crear_curso("C001", "Python Básico")
-
-est1 = Estudiante(101, "Ana", "ana@mail.com", "A123")
-est2 = Estudiante(102, "Juan", "juan@mail.com", "J456")
-
-curso_python.inscribir_estudiante(est1)
-curso_python.inscribir_estudiante(est2)
-
-# Crear evaluaciones
-ex1 = crear_evaluacion("Examen", "Parcial1", curso_python, 100)
-tarea1 = crear_evaluacion("Tarea", "Tarea1", curso_python, 20)
-
-# Registrar notas
-ex1.registrar_nota(est1, 85)
-ex1.registrar_nota(est2, 75)
-tarea1.registrar_nota(est1, 15)
-tarea1.registrar_nota(est2, 10)
-
-# Reportes
-reporte_promedios(curso_python)
-alerta_bajo_rendimiento(curso_python, umbral=60)
-
-🖥️ Ejemplo de salida en consola
-Curso creado: Python Básico (Código: C001)
-Estudiantes inscritos:
-- Ana (ana@mail.com)
-- Juan (juan@mail.com)
-
-Evaluaciones creadas:
-- Examen: Parcial1 (Máx: 100)
-- Tarea: Tarea1 (Máx: 20)
-
-Notas registradas:
-Ana → Parcial1 = 85
-Ana → Tarea1 = 15
-Juan → Parcial1 = 75
-Juan → Tarea1 = 10
-
-Reporte de promedios del curso: Python Básico
-Ana: 50.00
-Juan: 42.50
-
-Alerta estudiantes con promedio bajo (60) en Python Básico
-Ana: 50.00
-Juan: 42.50
-
-📂 Estructura del repositorio
-proyecto_academico/
-│── usuarios_cursos.py    # Código del módulo de Persona 1
-│── evaluaciones.py       # Código del módulo de Persona 2
-│── main.py               # Ejemplo de integración
-│── README.md             # Documentación
-
-👥 Autores
-
-Sarai Montejo: Usuario y Cursos
-
-Angelo García: Evaluaciones y Reportes, registrar nota para estudiante no inscrito → debe lanzar error.
+```
+Angelo García
+Sarai Montejo

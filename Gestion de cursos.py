@@ -89,8 +89,25 @@ class Curso:
         self.estudiantes.append(estudiante)
         estudiante.inscribir_curso(self)
 
+    def mostrar_estudiantes(self):
+        if not self.estudiantes:
+            print("No hay estudiantes inscritos.")
+        else:
+            print(f"Estudiantes en {self.nombre}:")
+            for est in self.estudiantes:
+                print(f" - {est}")
+
+    def mostrar_evaluaciones(self):
+        if not self.evaluaciones:
+            print("No hay evaluaciones creadas.")
+        else:
+            for ev in self.evaluaciones:
+                print(f" - {ev.nombre} ({ev.tipo()}) - Máx: {ev.puntaje_maximo}")
+
     def __str__(self):
-        return f"Curso: {self.nombre} (Código: {self.codigo})"
+        return f"Curso: {self.nombre} (Código: {self.codigo}) | Instructor: {self.instructor.nombre}"
+
+
 # persona 2
 class Evaluacion(ABC):
     def __init__(self, nombre, curso, puntaje_maximo):
@@ -150,47 +167,120 @@ def alerta_bajo_rendimiento(curso, umbral = 60):
         if promedio < umbral:
             print(f"{estudiante.nombre}: {promedio:.2f}")
 
-    # Ejemplo de uso
+ # ================== MENÚ PRINCIPAL ==================
+def menu():
+    cursos = {}  # Diccionario para manejar múltiples cursos
+
+    while True:
+        print("\n=== Menú Principal ===")
+        print("1. Crear curso")
+        print("2. Inscribir estudiante en curso")
+        print("3. Crear evaluación en curso")
+        print("4. Registrar calificación")
+        print("5. Consultar cursos y detalles")
+        print("6. Generar reportes")
+        print("7. Salir")
+
+        opcion = input("Seleccione una opción: ")
+
+        if opcion == "1":
+            codigo = input("Código del curso: ")
+            nombre_curso = input("Nombre del curso: ")
+
+            print("\n--- Datos del Instructor ---")
+            id_inst = input("ID del instructor: ")
+            nombre_inst = input("Nombre: ")
+            email_inst = input("Email: ")
+            profesion = input("Profesión: ")
+
+            try:
+                instructor = Instructor(id_inst, nombre_inst, email_inst, profesion)
+                curso = Curso(codigo, nombre_curso, instructor)
+                cursos[codigo] = curso
+                print(f"\nCurso '{nombre_curso}' creado con éxito.")
+            except Exception as e:
+                print(f"Error: {e}")
+
+        elif opcion == "2":
+            codigo = input("Código del curso: ")
+            if codigo not in cursos:
+                print("Curso no encontrado.")
+            else:
+                curso = cursos[codigo]
+                id_est = input("ID del estudiante: ")
+                nombre = input("Nombre: ")
+                email = input("Email: ")
+                carnet = input("Carnet: ")
+                try:
+                    estudiante = Estudiante(id_est, nombre, email, carnet)
+                    curso.inscribir_estudiante(estudiante)
+                    print(f"Estudiante {nombre} inscrito en {curso.nombre}.")
+                except Exception as e:
+                    print(f"Error: {e}")
+
+        elif opcion == "3":
+            codigo = input("Código del curso: ")
+            if codigo not in cursos:
+                print("Curso no encontrado.")
+            else:
+                curso = cursos[codigo]
+                nombre_ev = input("Nombre de la evaluación: ")
+                tipo = input("Tipo (examen/tarea): ")
+                puntaje = int(input("Puntaje máximo: "))
+                try:
+                    ev = crear_evaluacion(tipo, nombre_ev, curso, puntaje)
+                    curso.evaluaciones.append(ev)
+                    print(f"Evaluación '{nombre_ev}' creada en {curso.nombre}.")
+                except Exception as e:
+                    print(f"Error: {e}")
+
+        elif opcion == "4":
+            codigo = input("Código del curso: ")
+            if codigo not in cursos:
+                print("Curso no encontrado.")
+            else:
+                curso = cursos[codigo]
+                curso.mostrar_evaluaciones()
+                nombre_ev = input("Nombre de la evaluación: ")
+                evaluacion = next((ev for ev in curso.evaluaciones if ev.nombre == nombre_ev), None)
+                if evaluacion is None:
+                    print("Evaluación no encontrada.")
+                else:
+                    curso.mostrar_estudiantes()
+                    id_est = input("ID del estudiante: ")
+                    estudiante = next((est for est in curso.estudiantes if est.id == id_est), None)
+                    if estudiante is None:
+                        print("Estudiante no encontrado.")
+                    else:
+                        nota = float(input("Ingrese la nota: "))
+                        try:
+                            evaluacion.registrar_nota(estudiante, nota)
+                            print("Nota registrada con éxito.")
+                        except Exception as e:
+                            print(f"Error: {e}")
+
+        elif opcion == "5":
+            print("\nCursos disponibles:")
+            for curso in cursos.values():
+                print(curso)
+                print(curso.mostrar_estudiantes())
+                curso.mostrar_evaluaciones()
+
+        elif opcion == "6":
+            codigo = input("Código del curso: ")
+            if codigo not in cursos:
+                print("Curso no encontrado.")
+            else:
+                curso = cursos[codigo]
+                reporte_promedios(curso)
+                alerta_bajo_rendimiento(curso)
+
+        elif opcion == "7":
+            print("Saliendo del sistema...")
+            break
+
+        else:
+            print("Opción no válida.")
+
 if __name__ == "__main__":
-    inst = Instructor(1, "María", "maria@mail.com", "Ingeniera en Sistemas")
-    curso_python = inst.crear_curso("C001", "Python Básico")
-
-    est1 = Estudiante(101, "Ana", "ana@mail.com", "A123")
-    est2 = Estudiante(102, "Juan", "juan@mail.com", "J456")
-    try:
-        curso_python.inscribir_estudiante(est1)
-        curso_python.inscribir_estudiante(est2)
-        curso_python.inscribir_estudiante(est1)
-    except ValueError as e:
-        print(e)
-
-    print(curso_python)
-    for est in curso_python.estudiantes:
-        print(f"- {est.nombre} ({est.email})")
-
-    # Crear evaluaciones
-    ex1 = crear_evaluacion("Examen", "Parcial1", curso_python, 100)
-    tarea1 = crear_evaluacion("Tarea", "Tarea1", curso_python, 20)
-
-    # Guardar evaluaciones en el curso
-    curso_python.evaluaciones.append(ex1)
-    curso_python.evaluaciones.append(tarea1)
-
-    print("\nEvaluaciones creadas:")
-    print(f"- {ex1.tipo()}: {ex1.nombre} (Máx: {ex1.puntaje_maximo})")
-    print(f"- {tarea1.tipo()}: {tarea1.nombre} (Máx: {tarea1.puntaje_maximo})")
-
-    # Registrar notas
-    ex1.registrar_nota(est1, 100)
-    ex1.registrar_nota(est2, 75)
-    tarea1.registrar_nota(est1, 20)
-    tarea1.registrar_nota(est2, 10)
-
-    print("\nNotas registradas:")
-    for ev in [ex1, tarea1]:
-        for est, nota in ev.notas.items():
-            print(f"{est.nombre}, {ev.nombre} = {nota}")
-
-    print()
-    reporte_promedios(curso_python)
-    alerta_bajo_rendimiento(curso_python, umbral=60)
+    menu()
